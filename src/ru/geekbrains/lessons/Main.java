@@ -77,6 +77,27 @@ public class Main {
             }
         }
     }
+    public static boolean isWinner(String s)
+    {
+        boolean diagonal1 = true;
+        boolean diagonal2 = true;
+        for(int i = 0;i < field.length; i++)
+        {
+            boolean line = true;
+            boolean row = true;
+            for(int j = 0;j < field.length; j++)
+            {
+                line &= (field[i][j].equals(s));
+                row &= (field[j][i].equals(s));
+            }
+            if (line||row)
+                return true;
+
+            diagonal1 &= (field[i][i].equals(s));
+            diagonal2 &= (field[i][field.length - 1 - i].equals(s));
+        }
+        return diagonal1||diagonal2;
+    }
 
     public static boolean isFinishedGame() {
         int countFreespace = 0;
@@ -85,27 +106,12 @@ public class Main {
                 if (elem.equals("."))
                     countFreespace++;
 
-        if ((field[0][0].equals("X") && field[0][1].equals("X") && field[0][2].equals("X"))
-                || (field[1][0].equals("X") && field[1][1].equals("X") && field[1][2].equals("X"))
-                || (field[2][0].equals("X") && field[2][1].equals("X") && field[2][2].equals("X"))
-                || (field[0][0].equals("X") && field[1][0].equals("X") && field[2][0].equals("X"))
-                || (field[0][1].equals("X") && field[1][1].equals("X") && field[2][1].equals("X"))
-                || (field[0][2].equals("X") && field[1][2].equals("X") && field[2][2].equals("X"))
-                || (field[0][0].equals("X") && field[1][1].equals("X") && field[2][2].equals("X"))
-                || (field[0][2].equals("X") && field[1][1].equals("X") && field[2][0].equals("X"))
-        ) {
+        if (isWinner("X"))
+        {
             System.out.println("Игрок победил");
             return true;
-        } else if(
-                (field[0][0].equals("O") && field[0][1].equals("O") && field[0][2].equals("O"))
-                || (field[1][0].equals("O") && field[1][1].equals("O") && field[1][2].equals("O"))
-                || (field[2][0].equals("O") && field[2][1].equals("O") && field[2][2].equals("O"))
-                || (field[0][0].equals("O") && field[1][0].equals("O") && field[2][0].equals("O"))
-                || (field[0][1].equals("O") && field[1][1].equals("O") && field[2][1].equals("O"))
-                || (field[0][2].equals("O") && field[1][2].equals("O") && field[2][2].equals("O"))
-                || (field[0][0].equals("O") && field[1][1].equals("O") && field[2][2].equals("O"))
-                || (field[0][2].equals("O") && field[1][1].equals("O") && field[2][0].equals("O"))
-        ) {
+        } else if (isWinner("O"))
+        {
             System.out.println("Компьютер победил");
             return true;
         } else if (countFreespace == 0) {
