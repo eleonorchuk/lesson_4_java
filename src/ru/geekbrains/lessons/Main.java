@@ -23,15 +23,15 @@ public class Main {
     }
 
     public static void initField() {
-        field = new String[3][3];
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
+        field = new String[5][5];
+        for (int i = 0; i < field.length; i++)
+            for (int j = 0; j < field.length; j++)
                 field[i][j] = ".";
     }
 
     public static void showField() {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field.length; j++) {
                 System.out.print(field[i][j] + "");
             }
             System.out.println();
@@ -78,25 +78,45 @@ public class Main {
         }
     }
     public static boolean isWinner(String s)
+            // s = "X" s = "O"
     {
-        boolean diagonal1 = true;
-        boolean diagonal2 = true;
+        int diagonal1 = 0;
+        int diagonal2 = 0;
         for(int i = 0;i < field.length; i++)
         {
-            boolean line = true;
-            boolean row = true;
+            int line = 0;
+            int row = 0;
             for(int j = 0;j < field.length; j++)
             {
-                line &= (field[i][j].equals(s));
-                row &= (field[j][i].equals(s));
+                if (field[i][j].equals(s))
+                    line++;
+                else
+                    line = 0;
+
+                if (field[j][i].equals(s))
+                    row++;
+                else
+                    row = 0;
+                if ((line == 4) || (row == 4))
+                    return true;
             }
-            if (line||row)
+
+            if (field[i][i].equals(s))
+                diagonal1++;
+            else
+                diagonal1 = 0;
+
+            if (diagonal1 == 4)
                 return true;
 
-            diagonal1 &= (field[i][i].equals(s));
-            diagonal2 &= (field[i][field.length - 1 - i].equals(s));
+            if (field[i][field.length - 1 - i].equals(s))
+                diagonal2++;
+            else
+                diagonal2 = 0;
+            if(diagonal2 == 4)
+                return true;
         }
-        return diagonal1||diagonal2;
+        return false;
     }
 
     public static boolean isFinishedGame() {
